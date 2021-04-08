@@ -6,8 +6,8 @@ GetPet is an app for pet lovers.
 
 Made by:
 
-- Chen Baadani [![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/chen-baadani/)
-- Dana Kraimer [![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/danakreimer/)
+- Chen Baadani&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/chen-baadani/)
+- Dana Kraimer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/danakreimer/)
 - May Bachar
 
 ## Installation
