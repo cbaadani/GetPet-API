@@ -1,6 +1,9 @@
-function encryptPassword(password) {
-    // TODO: add bcrypt to dis pleis
-    return { hash: '1', salt: '2' };
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+async function encryptPassword(password) {
+    const hash = await bcrypt.hash(password, saltRounds);
+    return hash;
 }
 
 module.exports = {

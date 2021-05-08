@@ -5,6 +5,11 @@ const url = 'mongodb://127.0.0.1:27017/GetPetDB';
 // reconnect db when there is an initial connection error
 const max_retries = 3;
 
+/**
+ * Connect to mongoose
+ * @param {number} retries 
+ * @returns 
+ */
 async function connect(retries = 1) {
     try {
         console.log(`Connecting to MongoDB...`);
