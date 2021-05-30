@@ -31,7 +31,6 @@ async function checkUser({ email, password }) {
     return false;
 }
 
-
 async function userExists({ email }) {
     const isExist = await User.exists({ email: email });
     return isExist;

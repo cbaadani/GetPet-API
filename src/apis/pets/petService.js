@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const userService = require('./userService');
+const userService = require('./petService');
 
-// /api/user gets added before
-router.post('/signup', async (req, res, next) => {
+// /api/pets gets added before
+router.post('/addpet', async (req, res, next) => {
     try {
         const { email, username, firstName, lastName, password } = req.body;
         const exists = await userService.userExists({ email })
@@ -28,23 +28,3 @@ router.post('/signup', async (req, res, next) => {
     }
 });
 
-router.post('/login', async (req, res, next) => {
-    try {
-        const { email, firstName, password } = req.body;
-        const correctUser = await userService.checkUser({
-            email,
-            password
-        });
-
-        if (correctUser) {
-            res.send(`Welcome ${firstName}`);
-        } else {
-            throw 'Incorrect details';
-        }
-
-    } catch (error) {
-        return next(error)
-    }
-});
-
-module.exports = router;
