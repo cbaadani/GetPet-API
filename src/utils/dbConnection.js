@@ -15,7 +15,8 @@ async function connect(retries = 1) {
         console.log(`Connecting to MongoDB...`);
         await mongoose.connect(url, {
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            useFindAndModify: false
         });
     } catch (error) {
         if (retries < max_retries) {
