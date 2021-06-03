@@ -36,7 +36,7 @@ async function userExists({ email }) {
     return isExist;
 }
 
-async function userUpadte(id, reqBody){
+async function updateUser(id, reqBody){
     const updatedUser = User.findByIdAndUpdate(id, reqBody, {new: true});
     return updatedUser;
 }
@@ -45,5 +45,5 @@ module.exports = {
     createUser,
     checkUser,
     userExists,
-    userUpadte
+    updateUser
 };
