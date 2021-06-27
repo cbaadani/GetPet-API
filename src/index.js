@@ -10,7 +10,7 @@ app.use(express.urlencoded({
 }));
 
 app.listen(port, () => {
-    console.log("Server is running on " + port + " port");
+    console.log(`Server is running on ${port} port`);
 });
 
 app.get('/api/health', (req, res) => {
