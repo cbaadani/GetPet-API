@@ -41,8 +41,14 @@ async function updateUser(id, reqBody){
     return updatedUser;
 }
 
-async function getUserByEmail({email}){
-    const userFound = await User.findOne({ "email": email });
+async function getUserByEmail(email){
+    const userFound = await User.findOne({ email }).populate('savedPets');
+    return userFound;
+}
+
+async function getUserById(id){
+    const userFound = await User.findOne({ _id: id }).populate('savedPets');
+
     return userFound;
 }
 
@@ -51,5 +57,6 @@ module.exports = {
     checkUser,
     userExists,
     updateUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 };

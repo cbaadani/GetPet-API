@@ -25,19 +25,18 @@ const jwtStrategy = new JwtStrategy(opts, async (payload, done) => {
 });
 
 const authMiddleware = async (req, res, next) => {
-    try {
-        await passport.authenticate('jwt', { session: false }, async function (err, user, info) {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return res.status(401).json({ error: info.message });
-            }
-            next();
-        })(req, res, next);
-    } catch (error) {
-        return next(error)
-    }
+    passport.authenticate('jwt', { session: false }, async function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) {
+            return res.status(401).json({ error: info.message });
+        }
+
+        req.user = user;
+        next();
+    })(req, res, next);
 };
 
 module.exports = {
