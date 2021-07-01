@@ -32,6 +32,10 @@ app.use('*', function(req, res) {
 app.use((error, req, res, next) => {
     const status = error.status || 500;
 
+    if (error.message) {
+        console.error(error.message);
+    }
+
     return res.status(status).json({ error: error.message || 'Internal Server Error' });
 });
 
