@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('./userService');
+const jwt = require('jsonwebtoken');
+const cfg = require("../../config.js");
+
 
 // /api/user gets added before
 router.post('/signup', async (req, res, next) => {
     try {
         const { email, username, firstName, lastName, password } = req.body;
+        // checks if user is already exists by email
         const exists = await userService.userExists({ email })
         if (exists) {
-            throw 'Email already exists';
+            res.status(500).json({error: "Email already exists"});
         }
         else {
             const newUser = await userService.createUser({
@@ -18,7 +22,10 @@ router.post('/signup', async (req, res, next) => {
                 lastName,
                 password
             });
-            res.json(newUser);
+            const body = { _id: newUser._id, email: newUser.email };
+            // issue jwt
+            const token = "Bearer " + jwt.sign({ newUser: body }, cfg.jwtSecret);
+            res.json({user: newUser, token: token});
         }
 
     } catch (error) {
@@ -35,9 +42,13 @@ router.post('/login', async (req, res, next) => {
         });
 
         if (correctUser) {
-            res.send(`Welcome`);
+            userDetails = await userService.getUserByEmail({email})
+            const body = { _id: userDetails._id, email: userDetails.email };
+            // issue jwt
+            const token = "Bearer " + jwt.sign({ userDetails: body }, cfg.jwtSecret);
+            res.json({user: userDetails, token: token});
         } else {
-            throw 'Incorrect details';
+            res.status(500).json({error: "Incorrect details"});
         }
 
     } catch (error) {
@@ -53,7 +64,7 @@ router.put('/:id', async (req, res, next) =>  {
         if (updatedUser) {
             res.json(updatedUser);
         } else {
-            throw 'ID not found';
+            res.status(500).json({error: "ID not found"});
         }
     } catch (error) {
         return next(error);

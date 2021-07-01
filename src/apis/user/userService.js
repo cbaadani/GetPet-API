@@ -41,9 +41,15 @@ async function updateUser(id, reqBody){
     return updatedUser;
 }
 
+async function getUserByEmail({email}){
+    const userFound = await User.findOne({ "email": email });
+    return userFound;
+}
+
 module.exports = {
     createUser,
     checkUser,
     userExists,
-    updateUser
+    updateUser,
+    getUserByEmail
 };
