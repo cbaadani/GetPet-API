@@ -3,6 +3,14 @@ const { isDev } = require('./env');
 const { awaitableTimeout } = require('./timerUtils');
 const url = process.env.DB_CONNECTION_STRING;
 
+// work with id instead of _id
+mongoose.set('toJSON', {
+    virtuals: true,
+    transform: (doc, converted) => {
+        delete converted._id;
+    }
+});
+
 // reconnect db when there is an initial connection error
 const max_retries = 3;
 

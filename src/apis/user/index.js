@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userService = require('./userService');
 const jwt = require('jsonwebtoken');
-const cfg = require("../../config.js");
-
+const { jwtSecret } = require('../../utils/auth');
 
 // /api/user gets added before
 router.post('/signup', async (req, res, next) => {
@@ -24,7 +23,7 @@ router.post('/signup', async (req, res, next) => {
             });
             const body = { _id: newUser._id, email: newUser.email };
             // issue jwt
-            const token = "Bearer " + jwt.sign({ newUser: body }, cfg.jwtSecret);
+            const token = jwt.sign({ newUser: body }, jwtSecret);
             res.json({user: newUser, token: token});
         }
 
@@ -45,12 +44,11 @@ router.post('/login', async (req, res, next) => {
             userDetails = await userService.getUserByEmail({email})
             const body = { _id: userDetails._id, email: userDetails.email };
             // issue jwt
-            const token = "Bearer " + jwt.sign({ userDetails: body }, cfg.jwtSecret);
-            res.json({user: userDetails, token: token});
+            const token = "Bearer " + jwt.sign({ userDetails: body }, jwtSecret);
+            res.json({ user: userDetails, token });
         } else {
-            res.status(500).json({error: "Incorrect details"});
+            res.status(500).json({ error: 'Incorrect details' });
         }
-
     } catch (error) {
         return next(error);
     }

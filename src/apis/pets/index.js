@@ -13,7 +13,7 @@ router.use(authMiddleware);
 
 // recognize pet
 router.use('/recognize', proxy.createProxyMiddleware({
-    target: 'http://localhost:5000',
+    target: process.env.RECOGNITION_PROXY_URL,
     changeOrigin: true,
     pathRewrite: {
         '^/api/pets/recognize': '/api/recognize',
