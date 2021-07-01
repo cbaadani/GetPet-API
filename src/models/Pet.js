@@ -2,16 +2,15 @@ const mongoose = require('mongoose');
 
 const PetSchema = new mongoose.Schema({
   name: String,
-  age: String,
-  page: String,
-  gender: String,
-  pic: String,
-  tags: [String],
+  description: String,
   type: {
       type: String,
       index: true
   },
-  description: String
+  age: Number,
+  gender: String,
+  profilePhoto: String,
+  tags: [String]
 }, { timestamps: true });
 
 module.exports =  mongoose.model('Pet', PetSchema, 'pets');
