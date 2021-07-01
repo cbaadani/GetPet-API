@@ -39,7 +39,7 @@ router.post('/login', async (req, res, next) => {
         });
 
         if (correctUser) {
-            userDetails = await userService.getUserByEmail({ email })
+            userDetails = await userService.getUserByEmail(email);
 
             // issue jwt
             const token = jwt.sign({ id: userDetails.id, email: userDetails.email }, jwtSecret);
