@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const { isDev } = require('./env');
 const { awaitableTimeout } = require('./timerUtils');
-const url = 'mongodb://127.0.0.1:27017/GetPetDB';
+const url = process.env.DB_CONNECTION_STRING;
 
 // reconnect db when there is an initial connection error
 const max_retries = 3;
@@ -16,7 +17,8 @@ async function connect(retries = 1) {
         await mongoose.connect(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: false
+            useFindAndModify: false,
+            autoIndex: isDev
         });
     } catch (error) {
         if (retries < max_retries) {

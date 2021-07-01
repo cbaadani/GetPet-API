@@ -1,3 +1,0 @@
-module.exports = {
-    jwtSecret: "mATWp6SSM5M0aN52ab+C9bx1gUHjlFQck9TE9IS2hh3oXR3pvaOH9SlwThh68CDfF08gpRwgU+OlB8/WpxccYUnc9GoSPX9wd+3NAvPNMzWJzxUFsCd6iJ37aUGC9Cr4AvQ56vxqvjrPbmdVKR9OUl+x098C6vg/UOvtZe4vg2Vw/1q8U9MFa58lrLyk7apNsc9+ksf+VWYh/AnUrBCarnuz2ZMXvUZu9pcM4XU1Dghk4ZhUOxLrM7+CX/n1euqgtl0QlEKRCWgCeGRHdwp3ha0pVoHJnSWAWpU/5nzAhhcVPL5NVez41CRPKthKvLvb+Vt78854SdolODDfpGZKaw==",
-};
