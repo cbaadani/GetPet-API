@@ -133,13 +133,13 @@ router.post('/cats', async (req, res, next) => {
 // get all cats
 router.get('/cats/adoption', async (req, res, next) => {
     try {
-            const allCats = await petService.getAllPets('cat');
-            if (allCats) {
-                res.json(allCats)
-            }
-            else {
-                res.status(500).json({ error: "Could not receive cats" })
-            }
+        const allCats = await petService.getAllPets('cat');
+        if (allCats) {
+            res.json(allCats)
+        }
+        else {
+            res.status(500).json({ error: "Could not receive cats" })
+        }
     } catch (error) {
         return next(error);
     }
@@ -149,23 +149,15 @@ router.get('/cats/adoption', async (req, res, next) => {
 // get cat by name
 router.get('/cats/:name', async (req, res, next) => {
     try {
-        await passport.authenticate('jwt', { session: false }, async function (err, user, info) {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return res.json({ error: info.message });
-            }
-            const receivedPet = await petService.getPetByName('cat', req.params.name);
-            if (receivedPet) {
-                res.json(receivedPet)
-            }
-            else {
-                // TODO: check what is the right way
-                res.status(500).json({ error: "pet not found" })
-                //throw new Error ("pet not found");
-            }
-        })(req, res, next);
+        const receivedPet = await petService.getPetByName('cat', req.params.name);
+        if (receivedPet) {
+            res.json(receivedPet)
+        }
+        else {
+            // TODO: check what is the right way
+            res.status(500).json({ error: "pet not found" })
+            //throw new Error ("pet not found");
+        }
     } catch (error) {
         return next(error);
     }
@@ -174,29 +166,17 @@ router.get('/cats/:name', async (req, res, next) => {
 // update cat by id
 router.put('/cats/:id', async (req, res, next) => {
     try {
-        await passport.authenticate('jwt', { session: false }, async function (err, user, info) {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return res.json({ error: info.message });
-            }
-            // TODO- What fields we can update?
-            const updatedPet = await petService.updatePet('cat', req.params.id, req.body);
-            if (updatedPet) {
-                res.json(updatedPet);
-            } else {
-                res.status(500).json({ error: "ID not found" })
-            }
-        })(req, res, next);
-
+        // TODO- What fields we can update?
+        const updatedPet = await petService.updatePet('cat', req.params.id, req.body);
+        if (updatedPet) {
+            res.json(updatedPet);
+        } else {
+            res.status(500).json({ error: "ID not found" })
+        }
     } catch (error) {
         return next(error);
     }
 });
-
-
-
 
 
 module.exports = router;
