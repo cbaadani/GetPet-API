@@ -12,7 +12,15 @@ class InternalError extends Error {
     }
 }
 
+class BadRequestError extends Error {
+    constructor(message = '') {
+        this.status = 400;
+        super(`Bad Request ${message}`);
+    }
+}
+
 module.exports = {
     NotFoundError,
-    InternalError
+    InternalError,
+    BadRequestError
 };

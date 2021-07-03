@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const { encryptPassword } = require('../../utils/encryptionUtils');
 const { decryptPassword } = require('../../utils/decryptionUtils');
+const mongoose = require('mongoose');
 
 
 /**
@@ -52,11 +53,19 @@ async function getUserById(id){
     return userFound;
 }
 
+function savePet({ petId, userId }) {
+    return User.updateOne(
+        { _id: userId }, 
+        { $addToSet: { savedPets: mongoose.ObjectId(petId) } }
+    );
+}
+
 module.exports = {
     createUser,
     checkUser,
     userExists,
     updateUser,
     getUserByEmail,
-    getUserById
+    getUserById,
+    savePet
 };

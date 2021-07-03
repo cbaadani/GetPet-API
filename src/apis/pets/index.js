@@ -21,7 +21,7 @@ router.use('/recognize', proxy.createProxyMiddleware({
 }));
 
 // add new pet
-router.post('/pets', controller(async (req) => {
+router.post('/', controller(async (req) => {
     const { name, age, page, pic, description, gender, type } = req.body;
 
     // TODO - check if pet already exists?
@@ -39,12 +39,12 @@ router.post('/pets', controller(async (req) => {
 }));
 
 // get all pets
-router.get('/pets/adoption', controller(() => {
-    return petService.getAllPets('dog');;
+router.get('/adoption', controller(async (req) => {
+    return petService.getNonSavedPets({ userId: req.user.id });
 }));
 
 // get pet by name
-router.get('/pets/:name', controller(async (req) => {
+router.get('/:name', controller(async (req) => {
     const pet = await petService.getPetByName(req.params.name, { type: req.params.type });
 
     if (!pet) {
@@ -55,7 +55,7 @@ router.get('/pets/:name', controller(async (req) => {
 }));
 
 // update pet by id
-router.put('/pets/:id', controller(async (req) => {
+router.put('/:id', controller(async (req) => {
     // TODO- What fields we can update?
     const updatedPet = await petService.updatePet(req.params.id, req.body);
 

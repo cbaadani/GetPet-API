@@ -1,4 +1,6 @@
 const Pet = require('../../models/Pet');
+const { clearUndefinedFields } = require('../../utils/object');
+const userService = require('../user/userService');
 
 const petType = Object.freeze({
     Dog: 'dog',
@@ -37,8 +39,15 @@ async function getPetByName(name, { type } = {}) {
     return receivedPet;
 }
 
+async function getNonSavedPets({ userId, type }) {
+    const { savedPets } = await userService.getUserById(userId);
+    const savedPetIds = savedPets.map((pet) => pet._id);
+
+    return Pet.find(clearUndefinedFields({ _id: { $nin: savedPetIds }, type }));
+}
+
 function getAllPets({ type }) {
-    return Pet.find({ type });
+    return Pet.find(clearUndefinedFields({ type }));
 }
 
 module.exports = {
@@ -48,4 +57,5 @@ module.exports = {
     upsertPet,
     getAllPets,
     getPetByName,
+    getNonSavedPets,
 };

@@ -4,6 +4,7 @@ const userService = require('./userService');
 const jwt = require('jsonwebtoken');
 const { jwtSecret, authMiddleware } = require('../../utils/auth');
 const controller = require('../../utils/controller');
+const { BadRequestError } = require('../../utils/errors');
 
 // /api/user gets added before
 router.post('/signup', async (req, res, next) => {
@@ -67,10 +68,20 @@ router.put('/:id', async (req, res, next) => {
     }
 });
 
-router.get('/', authMiddleware, controller(async (req) => {
+router.use(authMiddleware);
+
+router.get('/', controller(async (req) => {
     const { name, savedPets } = await userService.getUserById(req.user.id);
 
     return { name, savedPets };
+}));
+
+router.post('/savePet', controller((req) => {
+    const petId = req.query.petId;
+
+    if (!petId) throw new BadRequestError('missing petId');
+
+    return userService.savePet({ userId: req.user.id, petId });;
 }));
 
 module.exports = router;
