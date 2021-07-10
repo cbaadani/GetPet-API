@@ -1,9 +1,16 @@
 class GetPetError extends Error {}
 
+class UnauthorizedError extends GetPetError {
+    constructor() {
+        super('Unauthorized');
+        this.status = 401;
+    }
+}
+
 class NotFoundError extends GetPetError {
     constructor() {
         super('Not Found');
-        this.status = 401;
+        this.status = 404;
     }
 }
 
@@ -23,6 +30,7 @@ class BadRequestError extends GetPetError {
 
 module.exports = {
     GetPetError,
+    UnauthorizedError,
     NotFoundError,
     InternalError,
     BadRequestError

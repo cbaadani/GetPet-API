@@ -77,7 +77,7 @@ router.get('/', controller(async (req) => {
 }));
 
 router.post('/savePet', controller((req) => {
-    const petId = req.query.petId;
+    const { petId } = req.body;
 
     if (!petId) throw new BadRequestError('missing petId');
 

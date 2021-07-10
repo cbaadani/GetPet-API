@@ -1,21 +1,18 @@
 const User = require('../../models/User');
 const { encryptPassword } = require('../../utils/encryptionUtils');
 const { decryptPassword } = require('../../utils/decryptionUtils');
-const mongoose = require('mongoose');
-
+const ObjectId = require('../../utils/objectId');
 
 /**
  * Creates a user and adds it to the db
  * @param {{ username: string; password: string; }} options 
  * @returns 
  */
-async function createUser({ email, username, firstName, lastName, password }) {
+async function createUser({ email, name, password }) {
     const hash = await encryptPassword(password);
     const newUser = new User({
         email,
-        username,
-        firstName,
-        lastName,
+        name,
         hash
     });
 
@@ -54,9 +51,9 @@ async function getUserById(id){
 }
 
 function savePet({ petId, userId }) {
-    return User.updateOne(
-        { _id: userId }, 
-        { $addToSet: { savedPets: mongoose.ObjectId(petId) } }
+    return User.findByIdAndUpdate(
+        userId, 
+        { $addToSet: { savedPets: ObjectId(petId) } }
     );
 }
 

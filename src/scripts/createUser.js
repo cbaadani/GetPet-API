@@ -1,3 +1,0 @@
-function createDemoPets() {}
-
-function createDemoUser() {}
