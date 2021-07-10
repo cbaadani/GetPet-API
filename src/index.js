@@ -8,6 +8,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const passport = require('passport');
 const { jwtStrategy } = require('./utils/auth');
+const { GetPetError } = require('./utils/errors');
+const { isDev } = require('./utils/env');
 
 passport.use(jwtStrategy);
 
@@ -36,7 +38,10 @@ app.use((error, req, res, next) => {
         console.error(error.message);
     }
 
-    return res.status(status).json({ error: error.message || 'Internal Server Error' });
+    const isGetPetError = error instanceof GetPetError;
+    const errorMessage = isGetPetError || isDev ? error.message : 'Internal Server Error';
+
+    return res.status(status).json({ error: errorMessage });
 });
 
 app.listen(port, () => {

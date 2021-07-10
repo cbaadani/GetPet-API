@@ -1,25 +1,28 @@
-class NotFoundError extends Error {
+class GetPetError extends Error {}
+
+class NotFoundError extends GetPetError {
     constructor() {
-        this.status = 401;
         super('Not Found');
+        this.status = 401;
     }
 }
 
-class InternalError extends Error {
+class InternalError extends GetPetError {
     constructor() {
-        this.status = 500;
         super('Internal Server Error');
+        this.status = 500;
     }
 }
 
-class BadRequestError extends Error {
+class BadRequestError extends GetPetError {
     constructor(message = '') {
-        this.status = 400;
         super(`Bad Request ${message}`);
+        this.status = 400;
     }
 }
 
 module.exports = {
+    GetPetError,
     NotFoundError,
     InternalError,
     BadRequestError

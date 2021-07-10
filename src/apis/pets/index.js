@@ -44,8 +44,19 @@ router.get('/adoption', controller(async (req) => {
 }));
 
 // get pet by name
-router.get('/:name', controller(async (req) => {
+router.get('/name/:name', controller(async (req) => {
     const pet = await petService.getPetByName(req.params.name, { type: req.params.type });
+
+    if (!pet) {
+        throw new NotFoundError('Pet not found');
+    }
+
+    return pet;
+}));
+
+// get pet by id
+router.get('/:id', controller(async (req) => {
+    const pet = await petService.getPetById(req.params.id, { type: req.params.type });
 
     if (!pet) {
         throw new NotFoundError('Pet not found');

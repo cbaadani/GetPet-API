@@ -15,7 +15,6 @@ function createPet({ name, age, page, pic, description, gender, type }) {
     return newPet.save();
 }
 
-
 async function updatePet(id, reqBody) {
     const updatedPet = await Pet.findByIdAndUpdate(id, reqBody, { new: true });
 
@@ -43,11 +42,11 @@ async function getNonSavedPets({ userId, type }) {
     const { savedPets } = await userService.getUserById(userId);
     const savedPetIds = savedPets.map((pet) => pet._id);
 
-    return Pet.find(clearUndefinedFields({ _id: { $nin: savedPetIds }, type }));
+    return Pet.find(clearUndefinedFields({ _id: { $nin: savedPetIds }, type })).sort('-updatedAt');
 }
 
 function getAllPets({ type }) {
-    return Pet.find(clearUndefinedFields({ type }));
+    return Pet.find(clearUndefinedFields({ type })).sort('-updatedAt');
 }
 
 module.exports = {
