@@ -1,20 +1,18 @@
 const User = require('../../models/User');
 const { encryptPassword } = require('../../utils/encryptionUtils');
 const { decryptPassword } = require('../../utils/decryptionUtils');
-
+const ObjectId = require('../../utils/objectId');
 
 /**
  * Creates a user and adds it to the db
  * @param {{ username: string; password: string; }} options 
  * @returns 
  */
-async function createUser({ email, username, firstName, lastName, password }) {
+async function createUser({ email, name, password }) {
     const hash = await encryptPassword(password);
     const newUser = new User({
         email,
-        username,
-        firstName,
-        lastName,
+        name,
         hash
     });
 
@@ -41,9 +39,22 @@ async function updateUser(id, reqBody){
     return updatedUser;
 }
 
-async function getUserByEmail({email}){
-    const userFound = await User.findOne({ "email": email });
+async function getUserByEmail(email){
+    const userFound = await User.findOne({ email }).populate('savedPets');
     return userFound;
+}
+
+async function getUserById(id){
+    const userFound = await User.findOne({ _id: id }).populate('savedPets');
+
+    return userFound;
+}
+
+function savePet({ petId, userId }) {
+    return User.findByIdAndUpdate(
+        userId, 
+        { $addToSet: { savedPets: ObjectId(petId) } }
+    );
 }
 
 module.exports = {
@@ -51,5 +62,7 @@ module.exports = {
     checkUser,
     userExists,
     updateUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById,
+    savePet
 };
