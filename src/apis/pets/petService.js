@@ -49,6 +49,18 @@ function getAllPets({ type }) {
     return Pet.find(clearUndefinedFields({ type })).sort('-updatedAt');
 }
 
+function search(text) {
+    const regexSearch = { $regex: new RegExp(text, 'i') };
+    const find = text ? {
+        $or: [
+            { name: regexSearch },
+            { description: regexSearch },
+        ]
+    } : {};
+
+    return Pet.find(find).sort('-updatedAt');
+}
+
 module.exports = {
     createPet,
     updatePet,
@@ -57,4 +69,5 @@ module.exports = {
     getAllPets,
     getPetByName,
     getNonSavedPets,
+    search,
 };

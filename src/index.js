@@ -4,6 +4,7 @@ require('./utils/dbConnection');
 //require('./utils/scrape');
 const userRouter = require('./apis/user');
 const petRouter = require('./apis/pets');
+const reportRouter = require('./apis/reports');
 const app = express();
 const port = process.env.PORT || 3000;
 const passport = require('passport');
@@ -26,6 +27,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/user', userRouter);
 
 app.use('/api/pets', petRouter);
+
+app.use('/api/reports', reportRouter);
 
 app.use('*', function(req, res) {
     return res.status(404).json({ error: 'Route Not Found' });
