@@ -1,15 +1,27 @@
 const Pet = require('../../models/Pet');
 const { clearUndefinedFields } = require('../../utils/object');
+const ObjectId = require('../../utils/objectId');
 const userService = require('../user/userService');
 
-const petType = Object.freeze({
-    Dog: 'dog',
-    Cat: 'cat'
-});
-
-function createPet({ name, age, page, pic, description, gender, type }) {
+function createPet({
+    name,
+    description,
+    type,
+    age,
+    gender,
+    profilePhoto,
+    tags = [],
+    addedBy
+}) {
     const newPet = new Pet({
-        name, age, page, pic, description, gender, type
+        name,
+        description,
+        type,
+        age,
+        gender,
+        profilePhoto,
+        tags,
+        addedBy: ObjectId(addedBy)
     });
 
     return newPet.save();
@@ -45,8 +57,8 @@ async function getNonSavedPets({ userId, type }) {
     return Pet.find(clearUndefinedFields({ _id: { $nin: savedPetIds }, type })).sort('-updatedAt');
 }
 
-function getAllPets({ type }) {
-    return Pet.find(clearUndefinedFields({ type })).sort('-updatedAt');
+function getAllPets(addedBy) {
+    return Pet.find({ addedBy: ObjectId(addedBy) }).sort('-updatedAt');
 }
 
 function search(text) {

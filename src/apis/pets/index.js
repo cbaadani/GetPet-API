@@ -23,17 +23,26 @@ router.use('/recognize', proxy.createProxyMiddleware({
 
 // add new pet
 router.post('/', controller(async (req) => {
-    const { name, age, page, pic, description, gender, type } = req.body;
+    const {
+        name,
+        description,
+        type,
+        age,
+        gender,
+        profilePhoto,
+        tags
+    } = req.body;
 
     // TODO - check if pet already exists?
     const newPet = await petService.createPet({
         name,
-        age,
-        page,
-        pic,
         description,
+        type,
+        age,
         gender,
-        type
+        profilePhoto,
+        tags,
+        addedBy: req.user.id
     });
 
     return newPet;
@@ -68,6 +77,10 @@ router.get('/:id', controller(async (req) => {
     }
 
     return pet;
+}));
+
+router.get('/', controller(async (req) => {
+    return await petService.getAllPets(req.user.id);
 }));
 
 // update pet by id

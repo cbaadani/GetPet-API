@@ -10,7 +10,11 @@ const PetSchema = new mongoose.Schema({
   age: Number,
   gender: String,
   profilePhoto: String,
-  tags: [String]
+  tags: [String],
+  addedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 }, { timestamps: true });
 
 module.exports =  mongoose.model('Pet', PetSchema, 'pets');
