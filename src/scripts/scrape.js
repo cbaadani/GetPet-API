@@ -109,7 +109,7 @@ async function getDogExtraDetails(petPage) {
     const petTags = [];
     const { data } = await axios.get(petPage);
     const $ = cheerio.load(data);
-    const petGender = $('#comp-kb0it5i8 > h2').text();
+    var petGender = $('#comp-kb0it5i8 > h2').text();
     const petDesc = $('#comp-kb0it5hn > p').text();
     const petAge = $('#comp-kb0it5ie > h2').text();
     const petName = $('#comp-kb0it5i2 > h2').text();
@@ -118,7 +118,7 @@ async function getDogExtraDetails(petPage) {
     var goodWith = $('#comp-kb0it5ix > h2').text();
     goodWith = goodWith.replace(/\s/g, '');
     const isHouseTrained = $('#comp-kb0it5is > h2').text();
-
+    petGender = genderIntoEnglish(petGender);    
     // Checks if the dog is vaccinated
     if (isVaccinated) {
         // Pushes to the tags list
@@ -176,7 +176,7 @@ async function getCatExtraDetails(petPage) {
     var petTags = [];
     const { data } = await axios.get(petPage);
     const $ = cheerio.load(data);
-    const petGender = $('#comp-kcbptxel1 > h2').text();
+    var petGender = $('#comp-kcbptxel1 > h2').text();
     const petDesc = $('#comp-kcbptxdu > p').text();
     const petAge = $('#comp-kcbptxes > h2').text();
     const petName = $('#comp-kcbptxef > h2').text();
@@ -185,7 +185,7 @@ async function getCatExtraDetails(petPage) {
     var goodWith = $('#comp-kcbptxfg > h2').text();
     goodWith = goodWith.replace(/\s/g, '');
     const isHouseTrained = $('#comp-kcbptxfa > h2').text();
-
+    petGender = genderIntoEnglish(petGender);    
     // Checks if the cat is vaccinated
     if (isVaccinated.includes('כן')) {
         petTags.push('vaccinated');
@@ -273,6 +273,33 @@ function ageConvert(petAge) {
     return ageNum;
 }
 
+
+/**
+ * Translte the pet's gender from Hebrew to English.
+ * 
+ * @param {string} petGender 
+ * @returns 
+ */
+function genderIntoEnglish(petGender) { 
+    if (petGender.includes('זכרים')) {
+        if (petGender.includes('נקבות')) {
+            petGender = 'males and females';
+        } else {
+            petGender = 'males';
+        }
+    } else if (petGender.includes('נקבות')) {
+        petGender = 'females';
+    } else if (petGender.includes('זכר')) {
+        if (petGender.includes('נקבה')) {
+            petGender = 'male and female';
+        } else {
+            petGender = 'male';
+        }
+    } else if (petGender.includes('נקבה')) {
+        petGender = 'female';
+    }
+    return petGender;
+}
 
 mongoose.connection.on('connected', async (err) => {
     try {
