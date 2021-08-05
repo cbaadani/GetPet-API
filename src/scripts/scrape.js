@@ -29,26 +29,27 @@ async function scrapeSOS(petsSOS) {
     await page.goto(petsSOS.url, { waitUntil: 'networkidle0' });
     const buttonSelector = 'button[data-testid="buttonElement"]';
     await page.waitForSelector(buttonSelector);
+    const btnDivPath = (petsSOS.type === 'dog') ? 'div._2UgQw' :'div._2btH0';
     // Gets the value of the attribute 'aria-disable' of the button - true/false 
-    var buttonDisable = await page.evaluate(() => {
-        const btn = document.querySelector('div._2btH0');
+    var buttonDisable = await page.evaluate((btnDiv) => {
+        const btn = document.querySelector(btnDiv);
         return btn.getAttribute('aria-disabled')
-    });
+    }, btnDivPath);
     // Checks is the button the disabled
     while (buttonDisable === 'false') {
         // Clicks the buuton
         await page.evaluate((selector) => document.querySelector(selector).click(), buttonSelector);
         await sleep(500);
-        buttonDisable = await page.evaluate(() => {
-            const btn = document.querySelector('div._2btH0');
+        buttonDisable = await page.evaluate((btnDiv) => {
+            const btn = document.querySelector(btnDiv);
             return btn.getAttribute('aria-disabled')
-        });
+        }, btnDivPath);
     }
     await sleep(1000);
     // Gets the HTML
     const pageAfterClicks = await page.evaluate(() => document.querySelector('*').outerHTML);
     await getSOSpetsDetails(pageAfterClicks, petsSOS.type)
-    await browser.close()
+    await browser.close()    
 }
 
 
@@ -61,10 +62,12 @@ async function scrapeSOS(petsSOS) {
 async function getSOSpetsDetails(data, petType) {
     var petPage, petPicString, picArray, extraDetails;
     const $ = cheerio.load(data);
+    const petPagePath = (petType === 'dog') ? '.XUUsC a' : '.Ued3M a'
+    const petPicPath = (petType === 'dog') ? '.XUUsC a img' : '.Ued3M a img'
     // Runs over all the cells in the grid that contains all pets
     $('._3Rcdf ._1ozXL').each(async (i, element) => {
-        petPage = $(element).find('.Ued3M a').attr('href')
-        petPicString = $(element).find('.Ued3M a img').attr('src')
+        petPage = $(element).find(petPagePath).attr('href')
+        petPicString = $(element).find(petPicPath).attr('src')
         picArray = petPicString.split("/v1/fill/");
         const petPic = picArray[0];
         if (petType === 'dog') {
@@ -95,7 +98,7 @@ async function getSOSpetsDetails(data, petType) {
                 console.error('Scraping error');
             }
         }
-    })
+    });
 }
 
 
@@ -127,7 +130,7 @@ async function getDogExtraDetails(petPage) {
 
     // Checks if the dog is neutered or spayed
     if (isNeuteredOrSpayed) {
-        if (petGender === 'זכר') {
+        if (petGender === 'male') {
             petTags.push('neutered');
         } else {
             petTags.push('spayed');
@@ -193,7 +196,7 @@ async function getCatExtraDetails(petPage) {
 
     // Checks if the cat is neutered or spayed
     if (isNeuteredOrSpayed) {
-        if (petGender === 'זכר') {
+        if (petGender === 'male') {
             petTags.push('neutered');
         } else {
             petTags.push('spayed');
