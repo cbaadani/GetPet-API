@@ -28,7 +28,7 @@ function createPet({
 }
 
 async function updatePet(id, reqBody) {
-    const updatedPet = await Pet.findByIdAndUpdate(id, reqBody, { new: true });
+    const updatedPet = await Pet.findByIdAndUpdate(id, clearUndefinedFields(reqBody), { new: true });
 
     return updatedPet;
 }

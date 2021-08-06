@@ -33,7 +33,6 @@ router.post('/', controller(async (req) => {
         tags
     } = req.body;
 
-    // TODO - check if pet already exists?
     const newPet = await petService.createPet({
         name,
         description,
@@ -43,6 +42,31 @@ router.post('/', controller(async (req) => {
         profilePhoto,
         tags,
         addedBy: req.user.id
+    });
+
+    return newPet;
+}));
+
+router.put('/:petId', controller(async (req) => {
+    const {
+        name,
+        description,
+        type,
+        age,
+        gender,
+        profilePhoto,
+        tags
+    } = req.body;
+    const petId = req.params.petId;
+
+    const newPet = await petService.updatePet(petId, {
+        name,
+        description,
+        type,
+        age,
+        gender,
+        profilePhoto,
+        tags
     });
 
     return newPet;
