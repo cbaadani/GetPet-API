@@ -7,7 +7,8 @@
     "start": "node src/index.js",
     "start:watch": "nodemon --inspect src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "createDemoData": "node src/scripts/createDemoData.js"
+    "createDemoData": "node src/scripts/createDemoData.js",
+    "scrapeSOS": "node src/scripts/scrape.js"
   },
   "keywords": [],
   "author": "",
