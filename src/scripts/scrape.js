@@ -29,7 +29,7 @@ async function scrapeSOS(petsSOS) {
     await page.goto(petsSOS.url, { waitUntil: 'networkidle0' });
     const buttonSelector = 'button[data-testid="buttonElement"]';
     await page.waitForSelector(buttonSelector);
-    const btnDivPath = (petsSOS.type === 'dog') ? 'div._2UgQw' :'div._2btH0';
+    const btnDivPath = (petsSOS.type === 'dog') ? 'div > #comp-kb0iddm8': 'div > #comp-kcbmlyvf';
     // Gets the value of the attribute 'aria-disable' of the button - true/false 
     var buttonDisable = await page.evaluate((btnDiv) => {
         const btn = document.querySelector(btnDiv);
@@ -62,8 +62,8 @@ async function scrapeSOS(petsSOS) {
 async function getSOSpetsDetails(data, petType) {
     var petPage, petPicString, picArray, extraDetails;
     const $ = cheerio.load(data);
-    const petPagePath = (petType === 'dog') ? '.XUUsC a' : '.Ued3M a'
-    const petPicPath = (petType === 'dog') ? '.XUUsC a img' : '.Ued3M a img'
+    const petPagePath = 'div > div > div > div > a';
+    const petPicPath = 'div > div > div > div > a > wix-image > img';
     // Runs over all the cells in the grid that contains all pets
     $('._3Rcdf ._1ozXL').each(async (i, element) => {
         petPage = $(element).find(petPagePath).attr('href')
@@ -132,7 +132,7 @@ async function getDogExtraDetails(petPage) {
     if (isNeuteredOrSpayed) {
         if (petGender === 'male') {
             petTags.push('neutered');
-        } else {
+        } else if (petGender === 'female') {
             petTags.push('spayed');
         }
     }
@@ -306,7 +306,7 @@ function genderIntoEnglish(petGender) {
 
 mongoose.connection.on('connected', async (err) => {
     try {
-        await scrapeSOS(catsSOS);
+        //await scrapeSOS(catsSOS);
         await scrapeSOS(dogsSos);
         console.log('Scraping SOS succeeded');
     } catch (error) {
