@@ -45,7 +45,13 @@ async function getUserByEmail(email){
 }
 
 async function getUserById(id){
-    const userFound = await User.findOne({ _id: id }).populate('savedPets');
+    const userFound = await User.findOne({ _id: id }).populate({
+        path: 'savedPets',
+        populate: {
+            path: 'addedBy',
+            model: 'User'
+        }
+    });
 
     return userFound;
 }

@@ -40,7 +40,7 @@ async function upsertPet(filter, petDetails) {
 }
 
 async function getPetById(id) {
-    const receivedPet = await Pet.findById(id);
+    const receivedPet = await Pet.findById(id).populate('addedBy');
 
     return receivedPet;
 }
@@ -54,7 +54,7 @@ async function getNonSavedPets({ userId, type }) {
     const { savedPets } = await userService.getUserById(userId);
     const savedPetIds = savedPets.map((pet) => pet._id);
 
-    return Pet.find(clearUndefinedFields({ _id: { $nin: savedPetIds }, type })).sort('-updatedAt');
+    return Pet.find(clearUndefinedFields({ _id: { $nin: savedPetIds }, type })).populate('addedBy').sort('-updatedAt');
 }
 
 function getAllPets(addedBy) {
