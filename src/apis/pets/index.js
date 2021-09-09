@@ -30,6 +30,7 @@ router.post('/', controller(async (req) => {
         age,
         gender,
         profilePhoto,
+        location,
         tags
     } = req.body;
 
@@ -40,6 +41,7 @@ router.post('/', controller(async (req) => {
         age,
         gender,
         profilePhoto,
+        location,
         tags,
         addedBy: req.user.id
     });
@@ -55,6 +57,7 @@ router.put('/:petId', controller(async (req) => {
         age,
         gender,
         profilePhoto,
+        location,
         tags
     } = req.body;
     const petId = req.params.petId;
@@ -66,6 +69,7 @@ router.put('/:petId', controller(async (req) => {
         age,
         gender,
         profilePhoto,
+        location,
         tags
     });
 

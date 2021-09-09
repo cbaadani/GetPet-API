@@ -10,6 +10,7 @@ const PetSchema = new mongoose.Schema({
   age: Number,
   gender: String,
   profilePhoto: String,
+  location: String,
   tags: [String],
   addedBy: {
     type: mongoose.Schema.Types.ObjectId,

@@ -10,6 +10,7 @@ function createPet({
     age,
     gender,
     profilePhoto,
+    location,
     tags = [],
     addedBy
 }) {
@@ -20,6 +21,7 @@ function createPet({
         age,
         gender,
         profilePhoto,
+        location,
         tags,
         addedBy: ObjectId(addedBy)
     });
