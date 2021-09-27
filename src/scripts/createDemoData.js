@@ -116,6 +116,7 @@ async function createDemoPets(userId) {
             gender: pet.gender,
             profilePhoto: pet.profilePhoto,
             tags: pet.tags,
+            location: pet.location,
             addedBy: userId
         });
     }));
